@@ -1,6 +1,4 @@
-# ai-video-generator
 # AI Video Generator
-
 ## 📋 Overview
 An automated pipeline to generate Hindi videos from YouTube transcripts.
 
