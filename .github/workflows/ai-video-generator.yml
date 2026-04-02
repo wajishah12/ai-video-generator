@@ -1,0 +1,43 @@
+name: AI Video Generator
+
+on:
+  repository_dispatch:
+    types: [youtube_video_uploaded]
+
+jobs:
+  process-video:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          pip install --upgrade pip
+          pip install youtube-transcript-api openai google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+      - name: Download Video
+        run: |
+          yt-dlp https://youtube.com/watch?v=${{ github.event.client_payload.videoId }} -o video.mp4
+
+      - name: Extract Transcript
+        run: |
+          python scripts/extract_transcript.py ${{ github.event.client_payload.videoId }}
+
+      - name: Generate Hindi Summary
+        run: |
+          python scripts/generate_script.py transcript.txt
+
+      - name: Generate Voice
+        run: |
+          python scripts/tts.py hindi_script.txt
+
+      - name: Build Video
+        run: |
+          python scripts/video_builder.py hindi_audio.mp3 video.mp4
+
+      - name: Upload to YouTube
+        run: |
+          python scripts/upload.py output.mp4
