@@ -1,8 +1,9 @@
 name: AI Video Generator
 
 on:
-  repository_dispatch:
-    types: [youtube_video_uploaded]
+  push: 
+  # repository_dispatch:
+  #   types: [youtube_video_uploaded]
 
 jobs:
   process-video:
