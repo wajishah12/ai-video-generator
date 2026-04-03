@@ -21,3 +21,4 @@ An automated pipeline to generate Hindi videos from YouTube transcripts.
 git clone https://github.com/wajishah12/ai-video-generator.git
 cd ai-video-generator
 pip install -r requirements.txt
+```
